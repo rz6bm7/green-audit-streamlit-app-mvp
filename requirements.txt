@@ -6,4 +6,3 @@ torchvision==0.17.1+cpu
 sentencepiece>=0.1.99
 pillow
 numpy==1.23.5
---index-strategy unsafe-best-match
