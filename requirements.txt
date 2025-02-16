@@ -1,3 +1,5 @@
+#--find-links ./wheels
+#tokenizers==0.13.3 --prefer-binary
 -find-links ./wheels
 tokenizers==0.13.3 --prefer-binary
 #tokenizers>=0.12.1,<0.13.0   --prefer-binary --only-binary tokenizers  # Combined directives on one line
