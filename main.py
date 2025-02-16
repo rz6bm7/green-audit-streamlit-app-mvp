@@ -69,3 +69,6 @@ if uploaded_file:
         st.error(analysis['error']) 
  
 st.markdown("---\n*AI analysis powered by ClimateBERT | Affiliate links support our mission*") 
+test_text = "This is a test, and I am feeling happy."
+sentiment_result = text_analyzer(test_text)
+st.write(f"Sentiment analysis test: '{test_text}' - Result: {sentiment_result}")
