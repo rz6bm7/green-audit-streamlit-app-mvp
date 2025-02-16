@@ -5,7 +5,8 @@ import requests
 from io import BytesIO 
  
 # Initialize AI models 
-vision_analyzer = pipeline("image-to-text", model="Salesforce/blip2-opt-2.7b") 
+#vision_analyzer = pipeline("image-to-text", model="Salesforce/blip2-opt-2.7b") 
+vision_analyzer = pipeline("image-to-text", model="Salesforce/blip2-opt-2.7b", device_map="auto", torch_dtype=torch.float16)
 #text_analyzer = pipeline("sentiment-analysis")
 eco_classifier = pipeline("text-classification", model="climatebert/environmental-claims") 
  
