@@ -3,9 +3,9 @@ name: Build Tokenizers Wheel
 on:
   workflow_dispatch:  # Allows you to manually trigger this workflow
 
-permissions:  # ADD THIS SECTION TO GRANT WRITE PERMISSIONS
-  contents: write
-  workflows: write
+permissions: # <--- Permissions block starts here.  THIS LINE IS AT THE TOP LEVEL (no indent under 'on:')
+  contents: write   # <--- 'contents' and 'workflows' are indented ONE level under 'permissions:'
+  workflows: write  # <--- 'contents' and 'workflows' are at the SAME INDENTATION LEVEL
 
 jobs:
   build-wheel:
