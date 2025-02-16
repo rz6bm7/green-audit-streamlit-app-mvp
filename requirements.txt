@@ -1,1 +1,7 @@
-streamlittransformersrequestspresidio-analyzer
+streamlit>=1.28.0
+transformers[torch]>=4.35.0
+requests
+presidio-analyzer
+torch>=2.0.1
+torchvision>=0.15.2
+sentencepiece>=0.1.99
