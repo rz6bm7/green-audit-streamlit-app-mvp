@@ -1,9 +1,2 @@
 --find-links ./wheels
 tokenizers==0.13.3 --prefer-binary
-transformers[sentencepiece]==4.27.4
-torch>=2.0.0
-torchvision==0.17.1
-sentencepiece>=0.1.99
-numpy>=1.24.0
-pillow
-streamlit>=1.28.0
