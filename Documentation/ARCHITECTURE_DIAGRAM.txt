@@ -1,0 +1,5 @@
+ARCHITECTURE DIAGRAM - Green Audit Microservice MVP (Simplified) 
+ 
+[USER] --(Uploads Image)-- WEB APP (main.py)] 
+    | 
+    +-- MODEL - VISION ANALYZER (Hugging Face/Salesforce BLIP-2)] 
