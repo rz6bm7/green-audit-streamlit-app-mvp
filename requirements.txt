@@ -1,4 +1,6 @@
-tokenizers>=0.12.1,<0.13.0   --prefer-binary --only-binary tokenizers  # Combined directives on one line
+-find-links ./wheels
+tokenizers==0.13.3 --prefer-binary
+#tokenizers>=0.12.1,<0.13.0   --prefer-binary --only-binary tokenizers  # Combined directives on one line
 transformers[sentencepiece]==4.27.4
 torch>=2.0.0
 torchvision==0.17.1
