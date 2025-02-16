@@ -1,2 +1,2 @@
 --find-links ./wheels
-wheels/tokenizers-0.13.3-cp310-cp310-linux_x86_64.whl
+wheels/tokenizers-0.13.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
