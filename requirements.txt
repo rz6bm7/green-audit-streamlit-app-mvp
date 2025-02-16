@@ -1,2 +1,8 @@
 --find-links ./wheels
 wheels/tokenizers-0.13.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+transformers==4.27.4
+torch>=2.0.0
+torchvision==0.17.1+cpu
+numpy>=1.24.0
+pillow
+streamlit>=1.28.0
