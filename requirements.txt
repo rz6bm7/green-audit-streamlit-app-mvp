@@ -6,4 +6,4 @@ torchvision==0.17.1+cpu
 sentencepiece>=0.1.99
 pillow
 numpy>=1.24.0
-tokenizers==0.13.3 --only-binary :all:
+tokenizers==0.14.0  # Trying a newer version, no --only-binary yet
