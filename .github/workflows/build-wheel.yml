@@ -1,18 +1,18 @@
 name: Build Tokenizers Wheel
 
 on:
-  workflow_dispatch:  # Allows you to manually trigger this workflow
+  workflow_dispatch:
 
-permissions: # <--- Permissions block starts here.  THIS LINE IS AT THE TOP LEVEL (no indent under 'on:')
-  contents: write   # <--- 'contents' and 'workflows' are indented ONE level under 'permissions:'
-  workflows: write  # <--- 'contents' and 'workflows' are at the SAME INDENTATION LEVEL
+permissions:
+  contents: write
+  workflows: write
 
 jobs:
   build-wheel:
-    runs-on: ubuntu-latest  # Use a Linux environment (like Streamlit Cloud)
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.9']  # Build with Python 3.9
+        python-version: ['3.9']
 
     steps:
     - name: Checkout repository code
