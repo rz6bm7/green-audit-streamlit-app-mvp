@@ -3,6 +3,10 @@ name: Build Tokenizers Wheel
 on:
   workflow_dispatch:  # Allows you to manually trigger this workflow
 
+permissions:  # ADD THIS SECTION TO GRANT WRITE PERMISSIONS
+  contents: write
+  workflows: write
+
 jobs:
   build-wheel:
     runs-on: ubuntu-latest  # Use a Linux environment (like Streamlit Cloud)
