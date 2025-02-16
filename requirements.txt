@@ -1,10 +1,7 @@
-streamlit>=1.28.0
-#transformers[torch]==4.27.4
+transformers[sentencepiece]==4.27.4
 torch>=2.0.0
 torchvision==0.17.1+cpu
---extra-index-url https://download.pytorch.org/whl/cpu
 sentencepiece>=0.1.99
-pillow
 numpy>=1.24.0
-transformers[sentencepiece]==4.27.4
-tokenizers==0.14.0  # Trying a newer version, no --only-binary yet
+pillow
+streamlit>=1.28.0
