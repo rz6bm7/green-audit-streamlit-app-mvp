@@ -1,0 +1,146 @@
+# PowerShell Script to Fix Tokenizers Build Issues on Windows
+
+# Ensure PowerShell is running as Administrator
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Please run this script as Administrator!" -ForegroundColor Red
+    Exit
+}
+
+# Enable TLS 1.2 for secure downloads
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# Function to check if a command is available
+function Command-Exists {
+    param ([string]$cmd)
+    return !(Get-Command $cmd -ErrorAction SilentlyContinue -eq $null)
+}
+
+# 1. Check and Install Rust
+if (!(Command-Exists "rustup")) {
+    Write-Host "Rust is not installed. Installing Rust..." -ForegroundColor Yellow
+    Invoke-WebRequest -Uri "https://win.rustup.rs" -OutFile "$env:TEMP\rustup-init.exe"
+    Start-Process "$env:TEMP\rustup-init.exe" -ArgumentList "-y" -NoNewWindow -Wait
+    Refresh-Environment
+} else {
+    Write-Host "Rust is already installed. Updating Rust..." -ForegroundColor Green
+    rustup update
+}
+
+# 2. Check and Install Visual Studio Build Tools
+$vs_install = Get-Command "vswhere" -ErrorAction SilentlyContinue
+if (!$vs_install) {
+    Write-Host "Installing Visual Studio Build Tools..." -ForegroundColor Yellow
+    Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_buildtools.exe" -OutFile "$env:TEMP\vs_buildtools.exe"
+    Start-Process "$env:TEMP\vs_buildtools.exe" -ArgumentList "--quiet --wait --norestart --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional" -NoNewWindow -Wait
+} else {
+    Write-Host "Visual Studio Build Tools already installed." -ForegroundColor Green
+}
+
+# 3. Ensure Python is Installed and Updated
+if (!(Command-Exists "python")) {
+    Write-Host "Python is not installed. Installing Python 3.10..." -ForegroundColor Yellow
+    Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.10.12/python-3.10.12-amd64.exe" -OutFile "$env:TEMP\python-installer.exe"
+    Start-Process "$env:TEMP\python-installer.exe" -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -NoNewWindow -Wait
+    Refresh-Environment
+} else {
+    $python_version = python --version 2>&1
+    if ($python_version -match "Python 3\.(9|10|11|12)") {
+        Write-Host "Python is up to date ($python_version)." -ForegroundColor Green
+    } else {
+        Write-Host "Updating Python to latest version (3.10+)..." -ForegroundColor Yellow
+        Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.10.12/python-3.10.12-amd64.exe" -OutFile "$env:TEMP\python-installer.exe"
+        Start-Process "$env:TEMP\python-installer.exe" -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -NoNewWindow -Wait
+        Refresh-Environment
+    }
+}
+
+# 4. Ensure Pip is Updated
+Write-Host "Upgrading Pip..." -ForegroundColor Yellow
+python -m pip install --upgrade pip
+
+# 5. Check and Reinstall Tokenizers
+Write-Host "Checking tokenizers package..." -ForegroundColor Yellow
+$tokenizers_check = python -c "import tokenizers" 2>&1
+if ($tokenizers_check -match "ModuleNotFoundError") {
+    Write-Host "Tokenizers not found, installing..." -ForegroundColor Yellow
+    python -m pip install tokenizers
+} else {
+    Write-Host "Tokenizers already installed, upgrading..." -ForegroundColor Green
+    python -m pip install --upgrade tokenizers
+}
+
+# 6. Attempt to Rebuild Tokenizers if Installation Fails
+Write-Host "Rebuilding tokenizers..." -ForegroundColor Yellow
+python -m pip uninstall -y tokenizers
+python -m pip install --no-cache-dir tokenizers
+
+# 7. Verify Installation
+$check_install = python -c "import tokenizers" 2>&1
+if ($check_install -match "ModuleNotFoundError") {
+    Write-Host "Tokenizers installation failed! Try manual installation using Cargo." -ForegroundColor Red
+    Write-Host "Run the following command manually:" -ForegroundColor Cyan
+    Write-Host "cargo install tokenizers" -ForegroundColor Cyan
+} else {
+    Write-Host "Tokenizers installed successfully!" -ForegroundColor Green
+}
+
+Write-Host "Setup completed. Restart your terminal for changes to take effect." -ForegroundColor Cyan
+🚀 How to Use
+Open PowerShell as Administrator (search "PowerShell", right-click → "Run as Administrator").
+Navigate to the directory where you saved the script:
+powershell
+Copy
+Edit
+cd "C:\path\to\script"
+Run the script:
+powershell
+Copy
+Edit
+.\fix_tokenizers.ps1
+🛠 What This Does
+Checks and installs Rust if missing
+Installs Microsoft Visual Studio C++ Build Tools (needed for compiling Rust extensions)
+Ensures Python 3.9+ is installed and updated
+Upgrades Pip
+Reinstalls tokenizers package
+Attempts a manual build if installation fails
+Provides manual fixes if needed
+🔥 Alternate Batch Script for CMD (DOS)
+If you need a batch script for Command Prompt (CMD), save this as fix_tokenizers.bat and run it:
+
+batch
+Copy
+Edit
+@echo off
+echo Checking for Rust installation...
+where rustup >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Rust is not installed. Installing Rust...
+    curl -o rustup-init.exe https://win.rustup.rs
+    start /wait rustup-init.exe -y
+    del rustup-init.exe
+) else (
+    echo Rust is already installed. Updating...
+    rustup update
+)
+
+echo Checking for Python...
+where python >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Python is not installed. Downloading Python 3.10...
+    curl -o python-installer.exe https://www.python.org/ftp/python/3.10.12/python-3.10.12-amd64.exe
+    start /wait python-installer.exe /quiet InstallAllUsers=1 PrependPath=1
+    del python-installer.exe
+) else (
+    echo Python is installed.
+)
+
+echo Upgrading Pip...
+python -m pip install --upgrade pip
+
+echo Reinstalling tokenizers...
+python -m pip uninstall -y tokenizers
+python -m pip install --no-cache-dir tokenizers
+
+echo Done! Restart your terminal.
+pause
