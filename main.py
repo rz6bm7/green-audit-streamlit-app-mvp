@@ -7,7 +7,7 @@ st.title("Green Audit Streamlit App MVP")
 st.write("Upload an image to analyze and generate a descriptive output using our vision model.")
 
 # Initialize the image-to-text pipeline from transformers
-vision_analyzer = pipeline("image-to-text")
+vision_analyzer = pipeline("image-to-text", padding=True)
 
 # File uploader widget: accepts jpg, jpeg, and png files
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
