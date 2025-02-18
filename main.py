@@ -13,7 +13,8 @@ st.write("Upload an image to analyze and generate a descriptive output using our
 # Initialize the image-to-text pipeline from transformers
 #vision_analyzer = pipeline("image-to-text")
 #ision_analyzer = pipeline("google/small_vit_i2t_tvserie", torch_dtype=torch.float16) 
-vision_analyzer = pipeline("image-to-text", model="google/small_vit_i2t_tvserie", torch_dtype=torch.float16)
+#vision_analyzer = pipeline("image-to-text", model="google/small_vit_i2t_tvserie", torch_dtype=torch.float16)
+vision_analyzer = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning", torch_dtype=torch.float16)
 # Define image transformations using torchvision.transforms.Compose
 image_transform = transforms.Compose([
     transforms.Resize((64, 64)),  # Resize image to 256x256 pixels (adjust size if needed)
