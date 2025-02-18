@@ -10,7 +10,7 @@ st.title("Green Audit Streamlit App MVP")
 st.write("Upload an image to analyze and generate a descriptive output using our vision model.")
 
 # Initialize the image-to-text pipeline from transformers
-vision_analyzer = pipeline("image-to-text", padding=True)
+vision_analyzer = pipeline("image-to-text")
 # Define image transformations using torchvision.transforms.Compose
 image_transform = transforms.Compose([
     transforms.Resize((256, 256)),  # Resize image to 256x256 pixels (adjust size if needed)
