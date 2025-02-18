@@ -2,20 +2,28 @@ import streamlit as st
 from transformers import pipeline
 from PIL import Image
 
+# Set up the Streamlit app title and instructions
+st.title("Green Audit Streamlit App MVP")
+st.write("Upload an image to analyze and generate a descriptive output using our vision model.")
+
+# Initialize the image-to-text pipeline from transformers
 vision_analyzer = pipeline("image-to-text")
 
-st.title("Minimal Pipeline Test")
-st.write("Upload an image to test the minimal image-to-text pipeline.")
-
+# File uploader widget: accepts jpg, jpeg, and png files
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
+    # Open and display the uploaded image
     image = Image.open(uploaded_file)
-    st.image(image, caption='Uploaded Image.', use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+    
     st.write("Analyzing image...")
     try:
-        result = vision_analyzer(image)
-        st.write("AI Output:")
-        st.write(result)
+        # Get the output from the image-to-text pipeline
+        analysis = vision_analyzer(image)
+        st.write("**Analysis Result:**")
+        st.write(analysis)
     except Exception as e:
-        st.error(f"Error during AI analysis: {e}")
+        st.error(f"An error occurred during analysis: {e}")
+else:
+    st.info("Please upload an image file to get started.")
