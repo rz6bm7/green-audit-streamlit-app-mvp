@@ -28,7 +28,7 @@ if uploaded_file is not None:
     st.write("Analyzing image...")
     try:
         # Get the output from the image-to-text pipeline
-        analysis = vision_analyzer(image) # padding=True is here
+        analysis = vision_analyzer(image, padding=true) # padding=True is here
         st.write("**Analysis Result:**")
         st.write(analysis)
     except Exception as e:
