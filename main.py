@@ -15,9 +15,10 @@ st.write("Upload an image to analyze and generate a descriptive output using our
 #ision_analyzer = pipeline("google/small_vit_i2t_tvserie", torch_dtype=torch.float16) 
 #vision_analyzer = pipeline("image-to-text", model="google/small_vit_i2t_tvserie", torch_dtype=torch.float16)
 vision_analyzer = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning", torch_dtype=torch.float16)
+
 # Define image transformations using torchvision.transforms.Compose
 image_transform = transforms.Compose([
-    transforms.Resize((64, 64)),  # Resize image to 256x256 pixels (adjust size if needed)
+    transforms.Resize((256, 256)),  # Resize image to 256x256 pixels (adjust size if needed)
     transforms.ToTensor()           # Convert PIL Image to PyTorch tensor
 ])
 # File uploader widget: accepts jpg, jpeg, and png files
@@ -31,7 +32,7 @@ if uploaded_file is not None:
     st.write("Analyzing image...")
     try:
         # Get the output from the image-to-text pipeline
-        analysis = vision_analyzer(image)
+        analysis = vision_analyzer(image, padding=True)
         st.write("**Analysis Result:**")
         st.write(analysis)
     except Exception as e:
