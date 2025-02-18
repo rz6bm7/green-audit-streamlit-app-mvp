@@ -4,22 +4,18 @@ from PIL import Image
 import torch
 import gc
 import os
-import warnings
+import logging
 
-# Suppress specific warnings
-warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hub.file_download")
-
-# Force CPU usage and disable unnecessary logs
+# Force CPU-only mode
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-# Configure logging
-import logging
+# Reduce logging noise
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
-st.set_page_config(page_title="Green Audit Vision", layout="wide")
-st.title("🌱 Sustainable Image Analyzer")
-st.markdown("Upload images for environmental content analysis")
+# App configuration
+st.set_page_config(page_title="Green Audit", layout="centered")
+st.title("🌿 Environmental Image Analysis")
 
 @st.cache_resource(show_spinner=False)
 def load_model():
@@ -30,45 +26,39 @@ def load_model():
     )
 
 try:
-    vision_analyzer = load_model()
+    analyzer = load_model()
 except Exception as e:
-    st.error(f"Model loading failed: {str(e)}")
+    st.error(f"Model failed to load: {str(e)}")
     st.stop()
 
-def process_image(image):
-    return image.convert("RGB").resize((224, 224))
+def process_image(upload):
+    return Image.open(upload).convert("RGB").resize((224, 224))
 
-uploaded_file = st.file_uploader(
-    "Choose an image (JPG/PNG)", 
-    type=["jpg", "jpeg", "png"],
-    help="Max size: 5MB"
-)
+upload = st.file_uploader("Upload eco-related image", type=["jpg", "jpeg", "png"])
 
-if uploaded_file:
+if upload:
     try:
-        with st.spinner("Analyzing..."):
-            image = Image.open(uploaded_file)
-            processed_img = process_image(image)
+        with st.spinner("Analyzing sustainability features..."):
+            img = process_image(upload)
             
-            col1, col2 = st.columns(2)
+            col1, col2 = st.columns([1, 2])
             with col1:
-                st.image(image, use_column_width=True)
+                st.image(img, use_column_width=True)
                 
             with col2:
-                result = vision_analyzer(processed_img)
-                if result:
-                    st.subheader("Analysis Results")
-                    st.write(result[0]['generated_text'])
+                result = analyzer(img)[0]['generated_text']
+                st.subheader("Analysis Results")
+                st.markdown(f"**Key Observations:**  \n{result}")
                 
-                # Memory cleanup
-                del processed_img
-                gc.collect()
-                
+            # Memory cleanup
+            del img
+            gc.collect()
+            
     except Exception as e:
-        st.error(f"Error: {str(e)}")
+        st.error(f"Analysis failed: {str(e)}")
     finally:
-        if 'image' in locals():
-            del image
+        if 'img' in locals():
+            del img
         gc.collect()
 else:
-    st.info("Please upload an image file")
+    st.info("Please upload an image to begin analysis")
