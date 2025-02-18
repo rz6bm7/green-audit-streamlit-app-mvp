@@ -6,14 +6,14 @@ import gc
 import os
 import logging
 
-# Force CPU-only mode
+# Force CPU and full precision
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+torch.set_default_dtype(torch.float32)  # Critical fix
 
-# Reduce logging noise
+# Configure logging
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
-# App configuration
+# App setup
 st.set_page_config(page_title="Green Audit", layout="centered")
 st.title("🌿 Environmental Image Analysis")
 
@@ -22,7 +22,7 @@ def load_model():
     return pipeline(
         "image-to-text",
         model="nlpconnect/vit-gpt2-image-captioning",
-        torch_dtype=torch.float16
+        device=-1  # Force CPU
     )
 
 try:
@@ -38,17 +38,16 @@ upload = st.file_uploader("Upload eco-related image", type=["jpg", "jpeg", "png"
 
 if upload:
     try:
-        with st.spinner("Analyzing sustainability features..."):
+        with st.spinner("Analyzing..."):
             img = process_image(upload)
+            result = analyzer(img)[0]['generated_text']
             
             col1, col2 = st.columns([1, 2])
             with col1:
                 st.image(img, use_column_width=True)
-                
             with col2:
-                result = analyzer(img)[0]['generated_text']
                 st.subheader("Analysis Results")
-                st.markdown(f"**Key Observations:**  \n{result}")
+                st.write(result)
                 
             # Memory cleanup
             del img
@@ -61,4 +60,4 @@ if upload:
             del img
         gc.collect()
 else:
-    st.info("Please upload an image to begin analysis")
+    st.info("Please upload an image to begin")
