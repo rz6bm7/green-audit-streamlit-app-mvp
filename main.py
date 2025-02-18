@@ -13,7 +13,7 @@ st.write("Upload an image to analyze and generate a descriptive output using our
 vision_analyzer = pipeline("image-to-text")
 # Define image transformations using torchvision.transforms.Compose
 image_transform = transforms.Compose([
-    transforms.Resize((256, 256)),  # Resize image to 256x256 pixels (adjust size if needed)
+    transforms.Resize((128, 128)),  # Resize image to 256x256 pixels (adjust size if needed)
     transforms.ToTensor()           # Convert PIL Image to PyTorch tensor
 ])
 # File uploader widget: accepts jpg, jpeg, and png files
