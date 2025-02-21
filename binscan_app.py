@@ -5,9 +5,9 @@ import io
 import base64  # For encoding images for PDF (if needed)
 
 # -------------------- Configuration --------------------
-OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"  # Replace with your actual OpenAI API key - SECURE THIS IN REAL DEPLOYMENT
-if OPENAI_API_KEY == "YOUR_OPENAI_API_KEY":
-    st.warning("Please replace 'YOUR_OPENAI_API_KEY' with your actual OpenAI API key in the code.")
+OPENAI_API_KEY = "openai_api_key"  # Replace with your actual OpenAI API key - SECURE THIS IN REAL DEPLOYMENT
+if OPENAI_API_KEY == "openai_api_key":
+    st.warning("openai_api_key")
 
 # -------------------- Function to Analyze Waste Image (Simulated AI) --------------------
 def analyze_waste_image(image_file):
