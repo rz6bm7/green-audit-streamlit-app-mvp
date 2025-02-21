@@ -20,7 +20,7 @@ import io
 import base64  # For encoding images for PDF (if needed)
 
 OPENAI_API_KEY = st.secrets["openai_api_key"]
-if OPENAI_API_KEY == st.secrets["openai_api_key"]":
+if OPENAI_API_KEY == st.secrets["openai_api_key"]:
     st.warning("st.secrets["openai_api_key"]")
 # -------------------- Function to Analyze Waste Image (Simulated AI) --------------------
 def analyze_waste_image(image_file):
