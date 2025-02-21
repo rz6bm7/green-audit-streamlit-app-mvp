@@ -13,6 +13,12 @@ import base64  # For encoding images for PDF (if needed)
 
 # -------------------- Configuration --------------------
 #OPENAI_API_KEY = "st.secrets["openai_api_key"]"  # Replace with your actual OpenAI API key - SECURE THIS IN REAL DEPLOYMENT
+import streamlit as st
+import openai
+from PIL import Image
+import io
+import base64  # For encoding images for PDF (if needed)
+
 OPENAI_API_KEY = st.secrets["openai_api_key"]
 if OPENAI_API_KEY == "st.secrets["openai_api_key"]":
     st.warning("st.secrets["openai_api_key"]")
