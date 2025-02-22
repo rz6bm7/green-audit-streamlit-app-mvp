@@ -7,7 +7,7 @@ OPENAI_API_KEY = st.secrets.get("openai_api_key")  # Proper secrets handling
 
 # -------------------- Streamlit App Configuration --------------------
 st.set_page_config(
-    page_title="BinScan - Waste Analysis",
+    page_title="EnviraScan - Waste Analysis",
     page_icon="🗑️",
     layout="wide"
 )
